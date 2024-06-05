@@ -1,0 +1,3 @@
+com\mycompany\productsmongodbclass\models\Product.class
+com\mycompany\productsmongodbclass\SvProductsMongoDB.class
+com\mycompany\productsmongodbclass\infrastructure\ProductsMongoDB.class
