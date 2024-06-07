@@ -1,13 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
-package com.mycompany.productsmongodbclass;
+package com.mycompany.resumesmongodbclass;
 
-import com.mycompany.productsmongodbclass.infrastructure.ProductsMongoDB;
-import com.mycompany.productsmongodbclass.models.Product;
+import com.mycompany.resumesmongodbclass.infrastructure.ResumesMongoDB;
+import com.mycompany.resumesmongodbclass.models.CV;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -21,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Usuario
  */
 @WebServlet("/index")
-public class SvProductsMongoDB extends HttpServlet {
+public class SvResumesMongoDB extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,56 +29,65 @@ public class SvProductsMongoDB extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, Exception {
-        ProductsMongoDB productsMongoDb = new ProductsMongoDB();
-        String idProduct = request.getParameter("idProduct");
-        String actionProduct = request.getParameter("actionProduct");
+        ResumesMongoDB resumesMongoDb = new ResumesMongoDB();
+        String idCv = request.getParameter("id");
+        String actionCv = request.getParameter("actionCv");
 
-        List<Product> lstProducts = new ArrayList<>();
+        List<CV> lstCvs = new ArrayList<>();
 
-        if (idProduct == null || idProduct.isBlank() || idProduct.isEmpty()) {
+        if (idCv == null || idCv.isBlank() || idCv.isEmpty()) {
+            if (actionCv != null && actionCv.equals("Create")) {
+                request.getRequestDispatcher("/cvForm.jsp").forward(request, response);
+            } else {
+                lstCvs = resumesMongoDb.getAllCvsFromMongo();
 
-            lstProducts = productsMongoDb.getAllProductsFromMongo();
-
-            request.setAttribute("products", lstProducts);
-            request.getRequestDispatcher("/products.jsp").forward(request, response);
+                request.setAttribute("cvs", lstCvs);
+                request.getRequestDispatcher("/resumes.jsp").forward(request, response);
+            }
         } else {
-            if (actionProduct == null) {
-                Product product = productsMongoDb.getProductById(Integer.parseInt(idProduct));
+            if (actionCv == null) {
+                CV cv = resumesMongoDb.getCvById(Integer.parseInt(idCv));
 
-                request.setAttribute("product", product);
-                request.getRequestDispatcher("/productDetails.jsp").forward(request, response);
-            } else if (actionProduct.equals("Delete")) {
+                request.setAttribute("cv", cv);
+                request.getRequestDispatcher("/cvDetails.jsp").forward(request, response);
+            } else if (actionCv.equals("Edit")) {
+                CV cv = resumesMongoDb.getCvById(Integer.parseInt(idCv));
 
-                productsMongoDb.deleteProductById(Integer.parseInt(idProduct));
+                request.setAttribute("cv", cv);
+                request.getRequestDispatcher("/cvForm.jsp").forward(request, response);
+            } else if (actionCv.equals("Delete")) {
 
-                List<Product> products = productsMongoDb.getAllProductsFromMongo();
+                resumesMongoDb.deleteCvById(Integer.parseInt(idCv));
 
-                request.setAttribute("products", products);
-                request.getRequestDispatcher("/products.jsp").forward(request, response);
+                List<CV> cvs = resumesMongoDb.getAllCvsFromMongo();
 
+                request.setAttribute("cvs", cvs);
+                request.getRequestDispatcher("/resumes.jsp").forward(request, response);
             }
         }
     }
 
-    protected void saveProduct(HttpServletRequest request, HttpServletResponse response)
+    protected void saveCv(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Product product = new Product();
-        product.setId(Integer.parseInt(request.getParameter("inputId")));
-        product.setTitle(request.getParameter("inputTitle"));
-        product.setPrice(Integer.parseInt(request.getParameter("inputPrice")));
-        product.setDiscountPercentage(Double.parseDouble(request.getParameter("inputDiscount")));
-        product.setRating(request.getParameter("inputRating"));
-        product.setBrand(request.getParameter("inputBrand"));
-        product.setCategory(request.getParameter("inputCategory"));
-        product.setDescription(request.getParameter("inputDescription"));
+        CV cv = new CV();
 
-        ProductsMongoDB productsDb = new ProductsMongoDB();
+        cv.setId(Integer.parseInt(request.getParameter("inputId")));
+        cv.setName(request.getParameter("inputName"));
+        cv.setEmail(request.getParameter("inputEmail"));
+        cv.setPhone(request.getParameter("inputPhone"));
+        cv.setAddress(request.getParameter("inputAddress"));
+        cv.setPhoto(request.getParameter("inputPhoto"));
 
-        productsDb.updateProduct(product);
-        List<Product> products = productsDb.getAllProductsFromMongo();
+        ResumesMongoDB resumesDb = new ResumesMongoDB();
 
-        request.setAttribute("products", products);
-        request.getRequestDispatcher("/products.jsp").forward(request, response);
+        if (request.getParameter("action").equals("Edit")) {
+            resumesDb.updateCv(cv);
+        } else {
+            resumesDb.createCv(cv);
+        }
+
+        request.setAttribute("cv", cv);
+        request.getRequestDispatcher("/cvDetails.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -96,12 +100,14 @@ public class SvProductsMongoDB extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         try {
             processRequest(request, response);
         } catch (Exception exe) {
-             response.sendRedirect("/ProductsMongoDBClass/500.html");
+            System.out.println(exe.getMessage());
+
+            response.sendRedirect("/ResumesMongoDBClass/500.html");
         }
     }
 
@@ -116,7 +122,7 @@ public class SvProductsMongoDB extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        saveProduct(request, response);
+        saveCv(request, response);
     }
 
     /**

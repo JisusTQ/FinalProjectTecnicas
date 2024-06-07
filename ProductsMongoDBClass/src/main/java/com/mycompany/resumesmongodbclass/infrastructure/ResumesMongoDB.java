@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.productsmongodbclass.infrastructure;
+package com.mycompany.resumesmongodbclass.infrastructure;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClientSettings;
@@ -12,7 +12,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import static com.mongodb.client.model.Filters.eq;
-import com.mycompany.productsmongodbclass.models.Product;
+import com.mycompany.resumesmongodbclass.models.CV;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,12 +22,12 @@ import org.bson.Document;
  *
  * @author Usuario
  */
-public class ProductsMongoDB {
+public class ResumesMongoDB {
 
     private MongoDatabase dataBase;
     private MongoCollection<Document> collection;
 
-    public ProductsMongoDB() {
+    public ResumesMongoDB() {
         createConnection();
     }
 
@@ -47,18 +47,17 @@ public class ProductsMongoDB {
         this.collection = collection;
     }
     
-    public boolean updateProduct(Product product){
+    public boolean updateCv(CV cv){
         BasicDBObject basicDocument = new BasicDBObject();
         
-        basicDocument.append("title", product.getTitle());
-        basicDocument.append("description", product.getDescription());
-        basicDocument.append("price", product.getPrice());
-        basicDocument.append("brand", product.getBrand());
-        basicDocument.append("category", product.getCategory());
-        basicDocument.append("discountPercentage", product.getDiscountPercentage());
+        basicDocument.append("name", cv.getName());
+        basicDocument.append("email", cv.getEmail());
+        basicDocument.append("phone", cv.getPhone());
+        basicDocument.append("address", cv.getAddress());
+        basicDocument.append("photo", cv.getPhoto());
         
         BasicDBObject documentToUpdate = new BasicDBObject();
-        documentToUpdate.append("id", product.getId());
+        documentToUpdate.append("id", cv.getId());
         
         collection.updateOne(documentToUpdate, 
                 new BasicDBObject().append("$set", basicDocument));
@@ -66,7 +65,22 @@ public class ProductsMongoDB {
         return true;
     }   
     
-    public boolean deleteProductById(int id) throws Exception{
+    public boolean createCv(CV cv){
+        Document document = new Document();
+        
+        document.append("id", cv.getId());
+        document.append("name", cv.getName());
+        document.append("email", cv.getEmail());
+        document.append("phone", cv.getPhone());
+        document.append("address", cv.getAddress());
+        document.append("photo", cv.getPhoto());
+        
+        collection.insertOne(document);
+        
+        return true;
+    }   
+    
+    public boolean deleteCvById(int id) throws Exception{
         Document document = this.collection.find(eq("id", id)).first();
         
         if(document == null){
@@ -82,55 +96,48 @@ public class ProductsMongoDB {
     }
     
 
-    public Product getProductById(int id) {
+    public CV getCvById(int id) {
         Document document = this.collection.find(eq("id", id)).first();
         
-        Product product = new Product();
-        product.setId(document.getInteger("id"));
-        product.setTitle(document.getString("title"));
-        product.setDescription(document.getString("description"));
-        product.setPrice(document.getInteger("price"));
-        product.setBrand(document.getString("brand"));
-        product.setStock(document.getInteger("stock"));
-        product.setCategory(document.getString("category"));
-        product.setDiscountPercentage(document.getDouble("discountPercentage"));
+        CV cv = new CV();
+        cv.setId(document.getInteger("id"));
+        cv.setName(document.getString("name"));
+        cv.setEmail(document.getString("email"));
+        cv.setPhone(document.getString("phone"));
+        cv.setAddress(document.getString("address"));
+        cv.setPhoto(document.getString("photo"));
         
-        return product;
+        return cv;
     }
 
-    public List<Product> getAllProductsFromMongo() {
-        List<Product> products = new ArrayList<>();
+    public List<CV> getAllCvsFromMongo() {
+        List<CV> cvs = new ArrayList<>();
         for (Document document : collection.find()) {
-            Product product = new Product();
-            product.setId(document.getInteger("id"));
-            product.setTitle(document.getString("title"));
-            product.setDescription(document.getString("description"));
-            product.setPrice(document.getInteger("price"));
-            product.setBrand(document.getString("brand"));
-            product.setStock(document.getInteger("stock"));
-            product.setCategory(document.getString("category"));
-            product.setDiscountPercentage(document.getDouble("discountPercentage"));
-      
-            products.add(product);
+            CV cv = new CV();
+            cv.setId(document.getInteger("id"));
+            cv.setName(document.getString("name"));
+            cv.setEmail(document.getString("email"));
+            cv.setPhone(document.getString("phone"));
+            cv.setAddress(document.getString("address"));
+            cv.setPhoto(document.getString("photo"));
+            cv.setAddress(document.getString("address"));
+            cvs.add(cv);
         }
 
-        return products;
+        return cvs;
     }
 
     private void createConnection() {
         String server = "localhost";
         Integer port = 27017;
         try {
-            System.out.println("holi");
             MongoClient mongoClient = MongoClients.create(
                     MongoClientSettings.builder()
                             .applyToClusterSettings(builder
                                     -> builder.hosts(Arrays.asList(new ServerAddress(server, port))))
                             .build());
-            System.out.println("holi2");
             this.setDataBase(mongoClient.getDatabase("ProgrammingTechniques"));
-            collection = dataBase.getCollection("ProductClass");
-            System.out.println("holi3");
+            collection = dataBase.getCollection("resumes");
         } catch (Exception exe) {
             System.out.println("Connection Error.");
         }

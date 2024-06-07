@@ -1,116 +1,49 @@
-<%-- 
-    Document   : productDetails
-    Created on : 16/05/2024, 7:25:02 p. m.
-    Author     : Usuario
---%>
-
-<%@page import="com.mycompany.productsmongodbclass.models.Product"%>
+<%@page import="com.mycompany.resumesmongodbclass.models.CV"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Product Details</title>
+        <title>CV Details</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     </head>
     <body>
         <%
-            Product product = (Product) request.getAttribute("product");
+            CV cv = (CV) request.getAttribute("cv");
+            boolean isEdit = (cv != null);
         %>
         <div class="container">
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col-6">
-                    <form method="POST" action="SvProductsMongoDB" class="border px-3 py-3 mt-5 rounded">
-                        <div class="row align-items-center">
-                            <div class="col-2">
-                                <label for="inputId" class="form-label">Id</label>
-                                <input type="text" class="form-control" id="inputId" name="inputId" value="<%=product.getId()%>" aria-describedby="Id">
-                            </div>
-                            <div class="col-10">
-                                <label for="inputTitle" class="form-label">Title</label>
-                                <input type="text" class="form-control" id="inputTitle" name="inputTitle" value="<%=product.getTitle()%>" aria-describedby="Title ">
-                            </div>
+                    <form method="POST" action="SvResumesMongoDB" class="border px-3 py-3 mt-5 rounded">
+                        <input type="hidden" name="action" value="<%= isEdit ? "Edit" : "Create" %>">
+                        <div class="form-group mb-3">
+                            <label for="inputId">Id</label>
+                            <input type="integer" class="form-control" id="inputId" name="inputId" aria-describedby="emailHelp" placeholder="Enter email" value="<%= isEdit ? cv.getId() : 0 %>">
                         </div>
-                        <div class="row align-items-center mt-3">
-                            <div class="col-4">
-                                <label for="inputPrice" class="form-label">Price</label>
-                                <input type="number" class="form-control" id="inputPrice" name="inputPrice" value="<%=product.getPrice()%>" aria-describedby="Price ">
-                            </div>
-                            <div class="col-4">
-                                <label for="inputDiscount" class="form-label">Discount</label>
-                                <input type="number" class="form-control" id="inputDiscount" name="inputDiscount" value="<%=product.getDiscountPercentage()%>" aria-describedby="Discount">
-                            </div>
-                            <div class="col-4">
-                                <label for="inputRating" class="form-label">Rating</label>
-                                <input type="number" class="form-control" id="inputRating" name="inputRating" value="<%=product.getRating()%>" aria-describedby="Rating">
-                            </div>
+                        <div class="form-group mb-3">
+                            <label for="inputName">Name</label>
+                            <input type="text" class="form-control" id="inputName" name="inputName" placeholder="Enter name" value="<%= isEdit ? cv.getName() : "" %>" required>
                         </div>
-                        <div class="row align-items-center mt-3">
-                            <div class="col-6">
-                                <label for="inputBrand" class="form-label">Brand</label>
-                                <input type="text" class="form-control" id="inputBrand" name="inputBrand" value="<%=product.getBrand()%>" aria-describedby="Brand ">
-                            </div>
-                            <div class="col-6">
-                                <label for="inputCategory" class="form-label">Category</label>
-                                <input type="text" class="form-control" id="inputCategory" name="inputCategory" value="<%=product.getCategory()%>" aria-describedby="Brand">
-                            </div>
+                        <div class="form-group mb-3">
+                            <label for="inputEmail">Email address</label>
+                            <input type="email" class="form-control" id="inputEmail" name="inputEmail" placeholder="Enter email" value="<%= isEdit ? cv.getEmail() : "" %>" required>
+                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                         </div>
-                        <div class="row align-items-center mt-3">
-                            <div class="col-12">
-                                <label for="inputDescription" class="form-label">Description</label>
-                                <textarea class="form-control" id="inputDescription" name="inputDescription"><%=product.getDescription()%></textarea>
-                            </div>
+                        <div class="form-group mb-3">
+                            <label for="inputPhone">Phone</label>
+                            <input type="text" class="form-control" id="inputPhone" name="inputPhone" placeholder="Enter phone number" value="<%= isEdit ? cv.getPhone() : "" %>" required>
                         </div>
-                        <div class="row align-items-center mt-3 px-2">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">Save</button>
+                        <div class="form-group mb-3">
+                            <label for="inputAddress">Address</label>
+                            <input type="text" class="form-control" id="inputAddress" name="inputAddress" placeholder="Enter address" value="<%= isEdit ? cv.getAddress() : "" %>" required>
                         </div>
-                        <div class="row align-items-center mt-1 px-2">
-                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
-                         </div>
-                        <div class="row align-items-center mt-1 px-2">
-                            <a class="btn btn-secondary" href="/ProductsMongoDBClass/index" role="button">Cancel</a>
+                        <div class="form-group mb-3">
+                            <label for="inputPhoto">Photo URL</label>
+                            <input type="text" class="form-control" id="inputPhoto" name="inputPhoto" placeholder="Enter photo URL" value="<%= isEdit ? cv.getPhoto() : "" %>" required>
                         </div>
-
-                        <!-- Modal Edit products -->
-                        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="editModalLabel">Edit Products</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Quiere editar el producto?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Save changes</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <!-- Modal delete products -->
-                        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="deleteModalLabel">Delete Products</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Quiere eliminar el producto?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <a class="btn btn-danger" href="/ProductsMongoDBClass/index?idProduct=<%=product.getId()%>&actionProduct=Delete" role="button">Delete</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
+                        <button type="submit" class="btn btn-primary my-3">Submit</button>
                     </form>
                 </div>
                 <div class="col-3"></div>

@@ -2,26 +2,25 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.productsmongodbclass.models;
+package com.mycompany.resumesmongodbclass.models;
+
+import java.util.List;
 
 /**
  *
  * @author Usuario
  */
-public class Product {
+public class CV {
     private int id;
-    private String title;
-    private String description;
-    private int price;
-    private double discountPercentage;
-    private String rating;
-    private int stock;
-    private String brand;
-    private String category;
-    private String thumbnail;
-    private String[] images;
+    private String email;
+    private String name;
+    private String phone;
+    private String address;
+    private String photo;
+    private List<String> skills;
+    private List<Object> experience;
 
-    public Product() {
+    public CV() {
     }
 
     public int getId() {
@@ -32,83 +31,60 @@ public class Product {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getEmail() {
+        return email;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public int getPrice() {
-        return price;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public double getDiscountPercentage() {
-        return discountPercentage;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public void setDiscountPercentage(double discountPercentage) {
-        this.discountPercentage = discountPercentage;
+    public String getAddress() {
+        return address;
     }
 
-    public String getRating() {
-        return rating;
+    public String getPhoto() {
+        return photo;
     }
 
-    public void setRating(String rating) {
-        this.rating = rating;
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
-    public int getStock() {
-        return stock;
+    public List<String> getSkills() {
+        return skills;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setSkills(List<String> skills) {
+        this.skills = skills;
     }
 
-    public String getBrand() {
-        return brand;
+    public List<Object> getExperience() {
+        return experience;
     }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
-    }
-
-    public String[] getImages() {
-        return images;
-    }
-
-    public void setImages(String[] images) {
-        this.images = images;
+    public void setExperience(List<Object> experience) {
+        this.experience = experience;
     }
 }

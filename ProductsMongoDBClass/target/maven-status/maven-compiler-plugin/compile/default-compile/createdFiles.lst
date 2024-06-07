@@ -1,3 +1,3 @@
-com\mycompany\productsmongodbclass\models\Product.class
-com\mycompany\productsmongodbclass\SvProductsMongoDB.class
-com\mycompany\productsmongodbclass\infrastructure\ProductsMongoDB.class
+com\mycompany\resumesmongodbclass\models\CV.class
+com\mycompany\resumesmongodbclass\infrastructure\ResumesMongoDB.class
+com\mycompany\resumesmongodbclass\SvResumesMongoDB.class
