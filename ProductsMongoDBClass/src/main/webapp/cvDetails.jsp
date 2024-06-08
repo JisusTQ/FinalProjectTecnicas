@@ -32,7 +32,6 @@
                 </div>
                 <div class="col-md-8">
                     <h1><%=cv.getName()%></h1>
-                    <p class="lead">Ingeniero de Software</p>
                     <p><strong>ID: </strong><%=cv.getId()%></p>
                     <p><strong>Email: </strong><%=cv.getEmail()%></p>
                     <p><strong>Phone: </strong><%=cv.getPhone()%></p>
