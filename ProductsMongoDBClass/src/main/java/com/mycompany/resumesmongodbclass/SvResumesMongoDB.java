@@ -46,18 +46,18 @@ public class SvResumesMongoDB extends HttpServlet {
             }
         } else {
             if (actionCv == null) {
-                CV cv = resumesMongoDb.getCvById(Integer.parseInt(idCv));
+                CV cv = resumesMongoDb.getCvById(idCv);
 
                 request.setAttribute("cv", cv);
                 request.getRequestDispatcher("/cvDetails.jsp").forward(request, response);
             } else if (actionCv.equals("Edit")) {
-                CV cv = resumesMongoDb.getCvById(Integer.parseInt(idCv));
+                CV cv = resumesMongoDb.getCvById(idCv);
 
                 request.setAttribute("cv", cv);
                 request.getRequestDispatcher("/cvForm.jsp").forward(request, response);
             } else if (actionCv.equals("Delete")) {
 
-                resumesMongoDb.deleteCvById(Integer.parseInt(idCv));
+                resumesMongoDb.deleteCvById(idCv);
 
                 List<CV> cvs = resumesMongoDb.getAllCvsFromMongo();
 
@@ -67,16 +67,70 @@ public class SvResumesMongoDB extends HttpServlet {
         }
     }
 
+    protected boolean isValidCv(HttpServletRequest request) {
+
+        String id = request.getParameter("inputId");
+        String name = request.getParameter("inputName");
+        String email = request.getParameter("inputEmail");
+        String phone = request.getParameter("inputPhone");
+        String address = request.getParameter("inputAddress");
+        String photo = request.getParameter("inputPhoto");
+        String skills = request.getParameter("inputSkills");
+        String experience = request.getParameter("inputExperience");
+
+        if (id == null
+                || !id.matches("^((\\d{8})|(\\d{10})|(\\d{11})|(\\d{6}-\\d{5}))?$")) {
+            return false;
+        }
+
+        if (name == null || name.isBlank()) {
+            return false;
+        }
+
+        if (email == null || !email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            return false;
+        }
+
+        if (phone == null) {
+            return false;
+        }
+
+        if (address == null || address.isBlank()) {
+            return false;
+        }
+
+        if (photo == null || !photo.matches("^(https?)://[^\\s/$.?#].[^\\s]*$")) {
+            return false;
+        }
+
+        if (skills == null || skills.isBlank()) {
+            return false;
+        }
+
+        if (experience == null || experience.isBlank()) {
+            return false;
+        }
+        return true;
+    }
+
     protected void saveCv(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        if (!isValidCv(request)) {
+            request.setAttribute("errorMessage", "Invalid input. Please correct the errors and try again.");
+            request.getRequestDispatcher("/cvForm.jsp").forward(request, response);
+            return;
+        }
         CV cv = new CV();
 
-        cv.setId(Integer.parseInt(request.getParameter("inputId")));
+        cv.setId(request.getParameter("inputId"));
         cv.setName(request.getParameter("inputName"));
         cv.setEmail(request.getParameter("inputEmail"));
         cv.setPhone(request.getParameter("inputPhone"));
         cv.setAddress(request.getParameter("inputAddress"));
         cv.setPhoto(request.getParameter("inputPhoto"));
+        cv.setSkills(request.getParameter("inputSkills"));
+        cv.setExperience(request.getParameter("inputExperience"));
 
         ResumesMongoDB resumesDb = new ResumesMongoDB();
 
@@ -105,8 +159,6 @@ public class SvResumesMongoDB extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (Exception exe) {
-            System.out.println(exe.getMessage());
-
             response.sendRedirect("/ResumesMongoDBClass/500.html");
         }
     }

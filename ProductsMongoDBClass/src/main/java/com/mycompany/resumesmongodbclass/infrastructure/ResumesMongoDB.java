@@ -80,7 +80,7 @@ public class ResumesMongoDB {
         return true;
     }   
     
-    public boolean deleteCvById(int id) throws Exception{
+    public boolean deleteCvById(String id) throws Exception{
         Document document = this.collection.find(eq("id", id)).first();
         
         if(document == null){
@@ -96,11 +96,11 @@ public class ResumesMongoDB {
     }
     
 
-    public CV getCvById(int id) {
+    public CV getCvById(String id) {
         Document document = this.collection.find(eq("id", id)).first();
         
         CV cv = new CV();
-        cv.setId(document.getInteger("id"));
+        cv.setId(document.getString("id"));
         cv.setName(document.getString("name"));
         cv.setEmail(document.getString("email"));
         cv.setPhone(document.getString("phone"));
@@ -114,7 +114,7 @@ public class ResumesMongoDB {
         List<CV> cvs = new ArrayList<>();
         for (Document document : collection.find()) {
             CV cv = new CV();
-            cv.setId(document.getInteger("id"));
+            cv.setId(document.getString("id"));
             cv.setName(document.getString("name"));
             cv.setEmail(document.getString("email"));
             cv.setPhone(document.getString("phone"));

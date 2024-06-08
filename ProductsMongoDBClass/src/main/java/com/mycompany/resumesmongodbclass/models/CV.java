@@ -11,23 +11,23 @@ import java.util.List;
  * @author Usuario
  */
 public class CV {
-    private int id;
+    private String id;
     private String email;
     private String name;
     private String phone;
     private String address;
     private String photo;
-    private List<String> skills;
-    private List<Object> experience;
+    private String skills;
+    private String experience;
 
     public CV() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -72,19 +72,19 @@ public class CV {
         this.photo = photo;
     }
 
-    public List<String> getSkills() {
+    public String getSkills() {
         return skills;
     }
 
-    public void setSkills(List<String> skills) {
+    public void setSkills(String skills) {
         this.skills = skills;
     }
 
-    public List<Object> getExperience() {
+    public String getExperience() {
         return experience;
     }
 
-    public void setExperience(List<Object> experience) {
+    public void setExperience(String experience) {
         this.experience = experience;
     }
 }
