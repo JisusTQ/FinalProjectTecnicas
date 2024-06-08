@@ -33,6 +33,7 @@
                 <div class="col-md-8">
                     <h1><%=cv.getName()%></h1>
                     <p class="lead">Ingeniero de Software</p>
+                    <p><strong>ID: </strong><%=cv.getId()%></p>
                     <p><strong>Email: </strong><%=cv.getEmail()%></p>
                     <p><strong>Phone: </strong><%=cv.getPhone()%></p>
                     <p><strong>Address: </strong><%=cv.getAddress()%></p>
@@ -44,30 +45,18 @@
                 <h2>Experience</h2>
                 <div class="card mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">Ingeniero de Software</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Empresa XYZ</h6>
-                        <p class="card-text">Enero 2020 - Presente</p>
-                        <p>Desarrollé aplicaciones web utilizando tecnologías como React, Node.js y MongoDB.</p>
-                    </div>
-                </div>
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Desarrollador Web</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Empresa ABC</h6>
-                        <p class="card-text">Junio 2017 - Diciembre 2019</p>
-                        <p>Participé en el desarrollo y mantenimiento de sitios web corporativos y e-commerce.</p>
+                        <p><%=cv.getExperience()%></p>
                     </div>
                 </div>
             </div>
 
             <div class="mb-4">
                 <h2>Skills</h2>
-                <ul class="list-group">
-                    <li class="list-group-item">Programación en JavaScript, Python, y Java</li>
-                    <li class="list-group-item">Desarrollo de aplicaciones web con React y Angular</li>
-                    <li class="list-group-item">Manejo de bases de datos SQL y NoSQL</li>
-                    <li class="list-group-item">Control de versiones con Git</li>
-                </ul>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <p><%=cv.getSkills()%></p>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">

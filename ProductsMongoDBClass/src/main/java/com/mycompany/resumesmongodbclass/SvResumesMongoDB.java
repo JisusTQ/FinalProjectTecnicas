@@ -131,7 +131,8 @@ public class SvResumesMongoDB extends HttpServlet {
         cv.setPhoto(request.getParameter("inputPhoto"));
         cv.setSkills(request.getParameter("inputSkills"));
         cv.setExperience(request.getParameter("inputExperience"));
-
+        System.out.println(cv.getSkills());
+        System.out.println(cv.getExperience());
         ResumesMongoDB resumesDb = new ResumesMongoDB();
 
         if (request.getParameter("action").equals("Edit")) {
@@ -158,8 +159,8 @@ public class SvResumesMongoDB extends HttpServlet {
             throws IOException {
         try {
             processRequest(request, response);
-        } catch (Exception exe) {
-            response.sendRedirect("/ResumesMongoDBClass/500.html");
+        } catch (Exception exe) { 
+           response.sendRedirect("/ResumesMongoDBClass/500.html");
         }
     }
 

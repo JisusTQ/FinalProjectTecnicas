@@ -32,8 +32,6 @@
                 <div class="col-3"></div>
                 <div class="col-6">
                     <form method="POST" action="SvResumesMongoDB" class="border px-3 py-3 mt-5 rounded">
-
-
                         <div class="mb-3 flex" >
                             <h5 class="modal-title text-center">CV Form</h5>
                         </div>
@@ -72,14 +70,15 @@
                         <div class="form-group mb-3">
                             <label for="inputPhoto">Photo URL <span style="color:red">*</span></label>
                             <input type="url" class="form-control" id="inputPhoto" name="inputPhoto" placeholder="Enter photo URL" value="<%= isEdit ? cv.getPhoto() : ""%>" required>
+                            <small id="photoHelp" class="form-text text-muted">Please only enter image url.</small>
                         </div>  
                         <div class="form-group mb-3">
                             <label for="inputExperience">Experience <span style="color:red">*</span></label>
-                            <textarea class="form-control" id="inputExperience" name="inputExperience" placeholder="Write about your laboral experience" id="TextareaExperience" style="height: 100px"></textarea>
+                            <textarea class="form-control" id="inputExperience" name="inputExperience" placeholder="Write about your laboral experience" id="TextareaExperience" style="height: 100px" required><%= isEdit ? cv.getExperience() : ""%></textarea>
                         </div>
                         <div class="form-group mb-3">
                             <label for="inputSkills">Skills <span style="color:red">*</span></label>
-                            <textarea class="form-control" id="inputSkills" name="inputSkills" placeholder="Write about your professional skills" id="TextareaSkills" style="height: 100px"></textarea>
+                            <textarea class="form-control" id="inputSkills" name="inputSkills" placeholder="Write about your professional skills" id="TextareaSkills" style="height: 100px" required><%= isEdit ? cv.getSkills() : ""%></textarea>
                         </div>
                         <a href="<%= isEdit ? "/ResumesMongoDBClass/index?id=" + cv.getId() : "/ResumesMongoDBClass/index"%>" class="btn btn-dark">Close</a>
                         <button type="submit" class="btn btn-primary float-right">Submit</button>

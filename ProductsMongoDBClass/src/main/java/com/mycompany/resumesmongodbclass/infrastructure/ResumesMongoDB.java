@@ -55,6 +55,8 @@ public class ResumesMongoDB {
         basicDocument.append("phone", cv.getPhone());
         basicDocument.append("address", cv.getAddress());
         basicDocument.append("photo", cv.getPhoto());
+        basicDocument.append("skills", cv.getSkills());
+        basicDocument.append("experience", cv.getExperience());
         
         BasicDBObject documentToUpdate = new BasicDBObject();
         documentToUpdate.append("id", cv.getId());
@@ -74,6 +76,8 @@ public class ResumesMongoDB {
         document.append("phone", cv.getPhone());
         document.append("address", cv.getAddress());
         document.append("photo", cv.getPhoto());
+        document.append("skills", cv.getSkills());
+        document.append("experience", cv.getExperience());
         
         collection.insertOne(document);
         
@@ -106,6 +110,8 @@ public class ResumesMongoDB {
         cv.setPhone(document.getString("phone"));
         cv.setAddress(document.getString("address"));
         cv.setPhoto(document.getString("photo"));
+        cv.setExperience(document.getString("experience"));
+        cv.setSkills(document.getString("skills"));
         
         return cv;
     }
